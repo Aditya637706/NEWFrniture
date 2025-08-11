@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to NewFurnituers website</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .product {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>NewFurnituers</h1>
+    <input id="searchBox" type="text" placeholder="Search for products...">
+    <button onclick="searchProducts()">Search</button>
+    <a href="cart.html" style="float:right;">🛒</a>
+  </header>
+
+  <h2>Featured Products</h2>
+
+  <div class="products" id="productList">
+
+    <div class="product" onclick="viewProduct('BED', 30999, 'images/bed.jpg', 'King size premium wooden bed with storage.')">
+      <img src="images/bed.jpg" alt="BED">
+      <h3>BED</h3>
+      <p>₹30,999</p>
+      <button onclick="event.stopPropagation(); addToCart('BED', 30999)">Add to Cart</button>
+      <a href="payment.html" onclick="event.stopPropagation();"><button class="buy-btn">Buy Now</button></a>
+    </div>
+
+    <div class="product" onclick="viewProduct('chair', 39999, 'images/chair.jpg', 'Comfortable wooden chair with cushion.')">
+      <img src="images/chair.jpg" alt="chair">
+      <h3>chair</h3>
+      <p>₹39,999</p>
+      <button onclick="event.stopPropagation(); addToCart('chair', 39999)">Add to Cart</button>
+      <a href="payment.html" onclick="event.stopPropagation();"><button class="buy-btn">Buy Now</button></a>
+    </div>
+
+    <div class="product" onclick="viewProduct('Sofa', 22000, 'images/Sofa1.jpg', 'Sofa Set 5pes Sofa set.')">
+      <img src="images/Sofa1.jpg" alt="Sofa">
+      <h3>Sofa Set</h3>
+      <p>₹22,000</p>
+      <button onclick="event.stopPropagation(); addToCart('Sofa', 22000)">Add to Cart</button>
+      <a href="payment.html" onclick="event.stopPropagation();"><button class="buy-btn">Buy Now</button></a>
+    </div>
+
+    <div class="product" onclick="viewProduct('Sofa Set', 19499, 'images/sofa.jpg', 'Stylish 3-seater sofa with modern design.')">
+      <img src="images/sofa.jpg" alt="Sofa">
+      <h3>Sofa Set</h3>
+      <p>₹19,499</p>
+      <button onclick="event.stopPropagation(); addToCart('Sofa Set', 19499)">Add to Cart</button>
+      <a href="payment.html" onclick="event.stopPropagation();"><button class="buy-btn">Buy Now</button></a>
+    </div>
+
+  </div>
+
+  <script>
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name: name, price: price });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(name + " added to cart!");
+    }
+
+    function searchProducts() {
+      const input = document.getElementById("searchBox").value.toLowerCase();
+      const products = document.getElementsByClassName("product");
+
+      for (let i = 0; i < products.length; i++) {
+        const productName = products[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+        if (productName.includes(input)) {
+          products[i].style.display = "block";
+        } else {
+          products[i].style.display = "none";
+        }
+      }
+    }
+
+    // Live filtering while typing
+    document.getElementById("searchBox").addEventListener("input", searchProducts);
+
+    function viewProduct(name, price, image, desc) {
+      const product = { name, price, image, desc };
+      localStorage.setItem("selectedProduct", JSON.stringify(product));
+      window.location.href = "product.html";
+    }
+  </script>
+
+</body>
+</html>

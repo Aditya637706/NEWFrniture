@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product Details</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #232f3e;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 60%;
+    }
+
+    header input {
+      width: 100%;
+      padding: 8px;
+    }
+
+    header button {
+      padding: 8px 12px;
+      background: orange;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .main-content {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      display: flex;
+      gap: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .main-content img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .details {
+      flex: 1;
+    }
+
+    .details h1 {
+      margin-bottom: 10px;
+    }
+
+    .details p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .details button {
+      padding: 10px 16px;
+      background: orange;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .details button.buy {
+      background: green;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 40px 0 10px;
+    }
+
+    .products {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 20px 40px 20px;
+    }
+
+    .product {
+      background: white;
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header with search -->
+  <header>
+    <h1>NewFurnituers</h1>
+    <div class="search-bar">
+      <input type="text" id="searchBox" placeholder="Search for products...">
+      <button onclick="searchProducts()">Search</button>
+    </div>
+    <a href="cart.html" style="color:white;">🛒</a>
+  </header>
+
+  <!-- Product detail section -->
+  <div class="main-content">
+    <img id="productImage" src="" alt="Product Image">
+    <div class="details">
+      <h1 id="productName"></h1>
+      <h2 id="productPrice"></h2>
+      <p id="productDesc"></p>
+      <button onclick="addToCart()">Add to Cart</button>
+      <a href="payment.html"><button class="buy">Buy Now</button></a>
+    </div>
+  </div>
+
+  <!-- More Products section -->
+  <h2>More Products</h2>
+  <div class="products" id="productList">
+    <div class="product" onclick="viewProduct('BED', 30999, 'images/bed.jpg', 'King size premium wooden bed with storage.')">
+      <img src="images/bed.jpg" alt="BED">
+      <h3>BED</h3>
+      <p>₹30,999</p>
+    </div>
+
+    <div class="product" onclick="viewProduct('chair', 39999, 'images/chair.jpg', 'Comfortable wooden chair with cushion.')">
+      <img src="images/chair.jpg" alt="chair">
+      <h3>chair</h3>
+      <p>₹39,999</p>
+    </div>
+
+    <div class="product" onclick="viewProduct('Sofa', 22000, 'images/Sofa1.jpg', 'Sofa set 5pes Sofa set.')">
+      <img src="images/Sofa1.jpg" alt="Sofa">
+      <h3>Sofa</h3>
+      <p>₹22,000</p>
+    </div>
+
+    <div class="product" onclick="viewProduct('Sofa Set', 19499, 'images/sofa.jpg', 'Stylish 3-seater sofa with modern design.')">
+      <img src="images/sofa.jpg" alt="Sofa Set">
+      <h3>Sofa Set</h3>
+      <p>₹19,499</p>
+    </div>
+  </div>
+
+  <!-- JS Logic -->
+  <script>
+    // Load selected product
+    const product = JSON.parse(localStorage.getItem("selectedProduct"));
+    document.getElementById("productImage").src = product.image;
+    document.getElementById("productName").innerText = product.name;
+    document.getElementById("productPrice").innerText = "₹" + product.price;
+    document.getElementById("productDesc").innerText = product.desc;
+
+    function addToCart() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name: product.name, price: product.price });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product.name + " added to cart!");
+    }
+
+    function viewProduct(name, price, image, desc) {
+      const newProduct = { name, price, image, desc };
+      localStorage.setItem("selectedProduct", JSON.stringify(newProduct));
+      window.location.href = "product.html";
+    }
+
+    function searchProducts() {
+      const input = document.getElementById("searchBox").value.toLowerCase();
+      const products = document.getElementsByClassName("product");
+
+      for (let i = 0; i < products.length; i++) {
+        const productName = products[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+        products[i].style.display = productName.includes(input) ? "block" : "none";
+      }
+    }
+
+    document.getElementById("searchBox").addEventListener("input", searchProducts);
+  </script>
+
+</body>
+</html>
